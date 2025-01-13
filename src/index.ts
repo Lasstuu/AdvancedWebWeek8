@@ -17,7 +17,7 @@ router.post("/api/user/register",
         const errors: Result<ValidationError> = validationResult(req)
         if(!errors.isEmpty()){
             console.log(errors);
-            return res.status(403).json({errors: errors.array()})
+            return res.status(400).json({errors: errors.array()})
         }
     try{
         const existingUser: IUser | null = await User.findOne({email: req.body.email})
@@ -45,6 +45,11 @@ router.post("/api/user/register",
 router.post("/api/user/login",
     loginValidation,
     async (req: Request, res: Response):Promise<any> => {
+        const errors: Result<ValidationError> = validationResult(req)
+        if(!errors.isEmpty()){
+            console.log(errors);
+            return res.status(400).json({errors: errors.array()})
+        }
         try{
             const user: IUser | null = await User.findOne({email: req.body.email})
             if(!user){

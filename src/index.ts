@@ -13,6 +13,8 @@ const router:Router = Router()
 router.post("/api/user/register",
     body("email").isEmail().escape(),
     body("password").escape(),
+    body("username"),
+    body("isAdmin"),
     async(req: Request, res: Response):Promise<any> => {
         const errors: Result<ValidationError> = validationResult(req)
         if(!errors.isEmpty()){
@@ -30,7 +32,9 @@ router.post("/api/user/register",
 
         const newUser = await User.create({
             email: req.body.email,
-            password: hash
+            password: hash,
+            username: req.body.username,
+            isAdmin: req.body.isAdmin
         })
         return res.json(newUser)
 
@@ -43,6 +47,8 @@ router.post("/api/user/register",
 router.post("/api/user/login",
     body("email").trim().escape(),
     body("password"),
+    body("username"),
+    body("isAdmin"),
     async (req: Request, res: Response):Promise<any> => {
         try{
             const user: IUser | null = await User.findOne({email: req.body.email})

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <script src="/index.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">Logo</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>
+                    <form id="loginForm">
+                        <div class="input-field">
+                            <input type="email" id="email" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="password" id="password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <button type="submit" class="btn">Login</button>
+                    </form>
+                </li>
+                <li><a href="register.html" class="btn">Register</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="topicForm" style="display: none;">
+            <div class="input-field">
+                <input type="text" id="topicTitle" required>
+                <label for="topicTitle">Title</label>
+            </div>
+            <div class="input-field">
+                <textarea id="topicText" class="materialize-textarea" required></textarea>
+                <label for="topicText">Content</label>
+            </div>
+            <button type="submit" class="btn" id="postTopic">Post Topic</button>
+        </div>
+        <div id="topics"></div>
+    </div>
+
+</body>
+</html>

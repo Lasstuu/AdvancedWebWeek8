@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import {User, IUser} from "./models/User"
 import jwt, {JwtPayload} from "jsonwebtoken"
 import {validateToken} from "./middleware/validateToken"
+import{registerValidation, loginValidation} from "./validators/inputValidation"
 
 
 const router:Router = Router()
@@ -11,10 +12,7 @@ const router:Router = Router()
 
 
 router.post("/api/user/register",
-    body("email").isEmail().escape(),
-    body("password").escape(),
-    body("username"),
-    body("isAdmin"),
+    registerValidation,
     async(req: Request, res: Response):Promise<any> => {
         const errors: Result<ValidationError> = validationResult(req)
         if(!errors.isEmpty()){
@@ -45,10 +43,7 @@ router.post("/api/user/register",
 })
 
 router.post("/api/user/login",
-    body("email").trim().escape(),
-    body("password"),
-    body("username"),
-    body("isAdmin"),
+    loginValidation,
     async (req: Request, res: Response):Promise<any> => {
         try{
             const user: IUser | null = await User.findOne({email: req.body.email})

@@ -3,9 +3,9 @@ import {body, Result, ValidationError, validationResult} from "express-validator
 import bcrypt from "bcrypt"
 import {User, IUser} from "./models/User"
 import jwt, {JwtPayload} from "jsonwebtoken"
-import {validateToken} from "./middleware/validateToken"
+import {validateToken, validateAdmin} from "./middleware/validateToken"
 import{registerValidation, loginValidation} from "./validators/inputValidation"
-
+import {Topic, ITopic} from "./models/Topic"
 
 const router:Router = Router()
 
@@ -72,5 +72,49 @@ router.post("/api/user/login",
             return res.status(500).json({message: "Internal server error"})
         }
     })
+
+router.post("/api/topic", validateToken, async (req:Request, res: Response):Promise<any> =>{
+    try{
+        
+        if(!req.body.title || !req.body.content || !req.body.username){
+            return res.status(400).json({message: "All necessary data for topic not present"})
+        }
+        const topic:ITopic = new Topic({
+            title: req.body.title,
+            content: req.body.content,
+            username: req.body.username,
+            createdAt: new Date()
+        })
+        await topic.save()
+        return res.status(201).json({message: "Topic uploaded and saved in the database"})
+    }catch(error:any){
+        console.error(`Error while uploading topic: ${Error}`)
+        return res.status(500).json({message: "internal server error"})
+    }
+
+
+})
+
+router.get("/api/topics", validateToken, async (req:Request, res: Response):Promise<any> =>{
+        try{    
+            const topics:ITopic[] | null = await Topic.find()
+            if(!topics){
+                return res.status(404).json({message: "No topics found"})
+            }
+            res.status(200).json(topics)
+
+        }catch(error:any){
+            console.error(`Error while fetching topics ${error}`)
+            return res.status(500).json({error: "Internal server error"})
+        }
+
+
+    })
+
+
+
+router.delete("/api/topic/:id", validateAdmin, async(req:Request, res:Response)=>{
+
+})
 
 export default router

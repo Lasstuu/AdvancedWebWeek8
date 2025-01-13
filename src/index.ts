@@ -3,6 +3,7 @@ import {body, Result, ValidationError, validationResult} from "express-validator
 import bcrypt from "bcrypt"
 import {User, IUser} from "./models/User"
 import jwt, {JwtPayload} from "jsonwebtoken"
+import {validateToken} from "./middleware/validateToken"
 
 
 const router:Router = Router()
@@ -11,7 +12,7 @@ const router:Router = Router()
 
 router.post("/api/user/register",
     body("email").isEmail().escape(),
-    body("password"),
+    body("password").escape(),
     async(req: Request, res: Response):Promise<any> => {
         const errors: Result<ValidationError> = validationResult(req)
         if(!errors.isEmpty()){

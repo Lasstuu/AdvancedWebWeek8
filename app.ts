@@ -2,9 +2,13 @@ import express, {Express} from "express"
 import path from "path";
 import router from "./src/index"
 import mongoose, { Connection } from "mongoose";
+import dotenv from "dotenv"
+
+dotenv.config()
+
 
 const app: Express = express()
-const port = 3000
+const port:number = parseInt(process.env.PORT as string) || 3001
 
 const mongoDB: string = "mongodb://127.0.0.1:27017/testdb"
 mongoose.connect(mongoDB)

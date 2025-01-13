@@ -56,13 +56,13 @@ router.post("/api/user/login",
                 }
                 const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, {expiresIn: "2m"})
 
-                return res.status(200).json({message: "Login failed"})
+                return res.status(200).json({success: true, token})
             }
             return res.status(401).json({message: "Login failed"})
 
         }catch(error:any){
             console.error(`Error during user login: ${error}`)
-            return res.status(500).json({messgae: "Internal server error"})
+            return res.status(500).json({message: "Internal server error"})
         }
     })
 

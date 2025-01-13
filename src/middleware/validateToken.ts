@@ -8,7 +8,7 @@ interface CustomRequest extends Request{
     user?: JwtPayload
 }
 
-export const validateToken = (req: CustomRequest, res: Response, next: NextFunction) =>{
+const validateToken = (req: CustomRequest, res: Response, next: NextFunction) =>{
     const token: string | undefined = req.header('authorization')?.split(" ")[1]
     if(!token){
         res.status(401).json({message: "Token not found."})
@@ -26,14 +26,14 @@ export const validateToken = (req: CustomRequest, res: Response, next: NextFunct
 }
 
 
-export const validateAdmin = (req: CustomRequest, res: Response, next: NextFunction) =>{
+const validateAdmin = (req: CustomRequest, res: Response, next: NextFunction) =>{
     const token: string | undefined = req.header('authorization')?.split(" ")[1]
     if(!token){
         res.status(401).json({message: "Token not found."})
         return 
     }
     try{
-        const verified: JwtPayload = jwt.verify(token, process.env.SECRET as string) as JwtPayload
+        const verified = jwt.verify(token, process.env.SECRET as string) as JwtPayload
         if(!verified.isAdmin){
             res.status(403).json({message: "Access denied."})
             return 
@@ -47,3 +47,6 @@ export const validateAdmin = (req: CustomRequest, res: Response, next: NextFunct
     
 
 }
+
+export {validateToken, validateAdmin}
+

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 import {User, IUser} from "./models/User"
 import jwt, {JwtPayload} from "jsonwebtoken"
 import {validateToken, validateAdmin} from "./middleware/validateToken"
-import{registerValidation, loginValidation} from "./validators/inputValidation"
+import {registerValidation, loginValidation} from "./validators/inputValidation"
 import {Topic, ITopic} from "./models/Topic"
 
 const router:Router = Router()
@@ -79,10 +79,15 @@ router.post("/api/topic", validateToken, async (req:Request, res: Response):Prom
         if(!req.body.title || !req.body.content){
             return res.status(400).json({message: "All necessary data for topic not present"})
         }
+        const token:string | undefined = req.header("authorization")?.split(" ")[1]
+        if (!token) {
+            return res.status(401).json({message: "No token provided"});
+        }
+        const verified = jwt.verify(token, process.env.SECRET as string) as jwt.JwtPayload
         const topic:ITopic = new Topic({
             title: req.body.title,
             content: req.body.content,
-            username: validateToken.arguments.username,
+            username: verified.username,
             createdAt: new Date()
         })
         await topic.save()

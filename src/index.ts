@@ -76,13 +76,13 @@ router.post("/api/user/login",
 router.post("/api/topic", validateToken, async (req:Request, res: Response):Promise<any> =>{
     try{
         
-        if(!req.body.title || !req.body.content || !req.body.username){
+        if(!req.body.title || !req.body.content){
             return res.status(400).json({message: "All necessary data for topic not present"})
         }
         const topic:ITopic = new Topic({
             title: req.body.title,
             content: req.body.content,
-            username: req.body.username,
+            username: validateToken.arguments.username,
             createdAt: new Date()
         })
         await topic.save()
@@ -113,8 +113,8 @@ router.get("/api/topics", validateToken, async (req:Request, res: Response):Prom
 
 
 
-router.delete("/api/topic/:id", validateAdmin, async(req:Request, res:Response)=>{
+// router.delete("/api/topic/:id", validateAdmin, async(req:Request, res:Response)=>{
 
-})
+// })
 
 export default router

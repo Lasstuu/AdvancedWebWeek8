@@ -91,7 +91,7 @@ router.post("/api/topic", validateToken, async (req:Request, res: Response):Prom
             createdAt: new Date()
         })
         await topic.save()
-        return res.status(201).json({message: "Topic uploaded and saved in the database"})
+        return res.status(200).json({message: "Topic uploaded and saved in the database"})
     }catch(error:any){
         console.error(`Error while uploading topic: ${Error}`)
         return res.status(500).json({message: "internal server error"})
@@ -118,8 +118,17 @@ router.get("/api/topics", validateToken, async (req:Request, res: Response):Prom
 
 
 
-// router.delete("/api/topic/:id", validateAdmin, async(req:Request, res:Response)=>{
-
-// })
+router.delete("/api/topic/:id", validateAdmin, async (req: Request, res: Response): Promise<any> => {
+    try {
+        const topic = await Topic.findByIdAndDelete(req.params.id)
+        if (!topic) {
+            return res.status(404).json({ message: "Topic not found" })
+        }
+        return res.status(200).json({ message: "Topic deleted successfully." })
+    } catch (error: any) {
+        console.error(`Error while deleting topic: ${error}`)
+        return res.status(500).json({ message: "Internal server error" })
+    }
+})
 
 export default router

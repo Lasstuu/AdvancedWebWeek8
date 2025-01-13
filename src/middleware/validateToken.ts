@@ -40,7 +40,7 @@ const validateAdmin = (req: CustomRequest, res: Response, next: NextFunction) =>
         }
         req.user = verified
         next()
-        return verified
+
     }catch(error:any){
         res.status(400).json({message: "Access denied, missing token"})
     }

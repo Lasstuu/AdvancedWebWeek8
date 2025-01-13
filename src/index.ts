@@ -52,7 +52,8 @@ router.post("/api/user/login",
             if(bcrypt.compareSync(req.body.password, user.password as string)){
                 const jwtPayload: JwtPayload = {
                     id: user._id,
-                    email: user.email
+                    username: user.username,
+                    isAdmin: user.isAdmin
                 }
                 const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, {expiresIn: "2m"})
 

@@ -21,7 +21,7 @@ const fetchData = async (event) => {
     })
 
     if (response.ok) {
-        window.location.href = "index.html";
+        window.location.href = "/";
     } 
 }
 

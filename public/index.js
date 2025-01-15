@@ -86,6 +86,7 @@ async function loadTopics() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("loginForm").style.display = "hidden"
     if (localStorage.getItem("token")) {
         document.getElementById("topicForm").style.display = "block"
         loadTopics()

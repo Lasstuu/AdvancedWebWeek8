@@ -1,36 +1,36 @@
 
-document.getElementById('loginForm').addEventListener('submit', async (event) => {
+document.getElementById("loginForm").addEventListener("submit", async (event) => {
     event.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-    const response = await fetch('/api/user/login', {
-        method: 'POST',
+    const response = await fetch("/api/user/login", {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({ email, password })
     });
 
     if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token);
-        document.getElementById('topicForm').style.display = 'block';
+        localStorage.setItem("token", data.token);
+        document.getElementById("topicForm").style.display = "block";
         loadTopics();
         }
     });
 
-document.getElementById('postTopic').addEventListener('click', async (event) => {
+document.getElementById("postTopic").addEventListener("click", async (event) => {
     event.preventDefault();
-    const title = document.getElementById('topicTitle').value;
-    const content = document.getElementById('topicText').value;
-    const token = localStorage.getItem('token');
+    const title = document.getElementById("topicTitle").value;
+    const content = document.getElementById("topicText").value;
+    const token = localStorage.getItem("token");
 
-    const response = await fetch('/api/topic', {
-        method: 'POST',
+    const response = await fetch("/api/topic", {
+        method: "post",
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ title, content })
     });
@@ -41,53 +41,53 @@ document.getElementById('postTopic').addEventListener('click', async (event) => 
 });
 
 async function loadTopics() {
-    const response = await fetch('/api/topics', {
+    const response = await fetch("/api/topics", {
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
     });
 
     if (response.ok) {
-        const topics = await response.json();
-        const topicsDiv = document.getElementById('topics');
-        topicsDiv.innerHTML = '';
+        const topics = await response.json()
+        const topicsDiv = document.getElementById("topics")
+        topicsDiv.innerHTML = ""
         topics.forEach(topic => {
-            const topicDiv = document.createElement('div');
+            const topicDiv = document.createElement("div")
             topicDiv.innerHTML = `
                 <span>${topic.title}</span>
                 <p>${topic.content}</p>
-                <p>Posted by ${topic.username} on ${new Date(topic.createdAt).toLocaleString()}</p>
+                <p>Posted by ${topic.username} on ${topic.createdAt}</p>
                 <button class="btn deleteTopic" data-id="${topic._id}">Delete</button>
-            `;
-            topicsDiv.appendChild(topicDiv);
-        });
+            `
+            topicsDiv.appendChild(topicDiv)
+        })
 
-        document.querySelectorAll('.deleteTopic').forEach(button => {
-            button.addEventListener('click', async (event) => {
-                const id = event.target.getAttribute('data-id');
-                const token = localStorage.getItem('token');
+        document.querySelectorAll(".deleteTopic").forEach(button => {
+            button.addEventListener("click", async (event) => {
+                const id = event.target.getAttribute("data-id");
+                const token = localStorage.getItem("token");
 
                 const response = await fetch(`/api/topic/${id}`, {
-                    method: 'DELETE',
+                    method: "delete",
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        "Authorization": `Bearer ${token}`
                     }
                 });
 
                 if (response.ok) {
-                    loadTopics();
+                    loadTopics()
                 } else {
                     const data = await response.json();
-                    alert(data.message);
+                    alert(data.message)
                 }
-            });
-        });
+            })
+        })
     } 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('token')) {
-        document.getElementById('topicForm').style.display = 'block'
-        loadTopics();
+document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("token")) {
+        document.getElementById("topicForm").style.display = "block"
+        loadTopics()
     }
 })

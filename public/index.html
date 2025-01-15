@@ -13,12 +13,12 @@
             <a href="#" class="brand-logo">Logo</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
-                    <form id="loginForm">
-                        <div class="input-field">
+                    <form id="loginForm" class="navbar-form">
+                        <div class="input-field inline">
                             <input type="email" id="email" required>
                             <label for="email">Email</label>
                         </div>
-                        <div class="input-field">
+                        <div class="input-field inline">
                             <input type="password" id="password" required>
                             <label for="password">Password</label>
                         </div>
@@ -30,19 +30,18 @@
         </div>
     </nav>
     <div class="container">
-        <div id="topicForm" style="display: none;">
+        <div id="topicForm" hidden>
             <div class="input-field">
-                <input type="text" id="topicTitle" required>
+                <input type="text" id="topicTitle">
                 <label for="topicTitle">Title</label>
             </div>
             <div class="input-field">
-                <textarea id="topicText" class="materialize-textarea" required></textarea>
+                <textarea id="topicText" class="materialize-textarea"></textarea>
                 <label for="topicText">Content</label>
             </div>
             <button type="submit" class="btn" id="postTopic">Post Topic</button>
         </div>
         <div id="topics"></div>
     </div>
-
 </body>
 </html>

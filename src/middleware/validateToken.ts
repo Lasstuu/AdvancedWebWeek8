@@ -27,7 +27,7 @@ const validateToken = (req: CustomRequest, res: Response, next: NextFunction) =>
 
 
 const validateAdmin = (req: CustomRequest, res: Response, next: NextFunction) =>{
-    const token: string | undefined = req.header('authorization')?.split(" ")[1]
+    const token: string | undefined = req.header("authorization")?.split(" ")[1]
     if(!token){
         res.status(401).json({message: "Token not found."})
         return 
